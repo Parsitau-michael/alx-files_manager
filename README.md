@@ -28,7 +28,6 @@ Don’t forget to run $ npm install when you have the package.json
 
 Tasks
 0. Redis utils
-mandatory
 Inside the folder utils, create a file redis.js that contains the class RedisClient.
 
 RedisClient should have:
@@ -61,13 +60,8 @@ null
 12
 null
 bob@dylan:~$ 
-Repo:
-
-GitHub repository: alx-files_manager
-File: utils/redis.js
  
 1. MongoDB utils
-mandatory
 Inside the folder utils, create a file db.js that contains the class DBClient.
 
 DBClient should have:
@@ -119,13 +113,8 @@ true
 4
 30
 bob@dylan:~$ 
-Repo:
-
-GitHub repository: alx-files_manager
-File: utils/db.js
  
 2. First API
-mandatory
 Inside server.js, create the Express server:
 
 it should listen on the port set by the environment variable PORT or by default 5000
@@ -153,13 +142,8 @@ bob@dylan:~$
 bob@dylan:~$ curl 0.0.0.0:5000/stats ; echo ""
 {"users":4,"files":30}
 bob@dylan:~$ 
-Repo:
-
-GitHub repository: alx-files_manager
-File: server.js, routes/index.js, controllers/AppController.js
  
 3. Create a new user
-mandatory
 Now that we have a simple API, it’s time to add users to our database.
 
 In the file routes/index.js, add a new endpoint:
@@ -191,13 +175,8 @@ bob@dylan:~$
 bob@dylan:~$ curl 0.0.0.0:5000/users -XPOST -H "Content-Type: application/json" -d '{ "email": "bob@dylan.com" }' ; echo ""
 {"error":"Missing password"}
 bob@dylan:~$ 
-Repo:
-
-GitHub repository: alx-files_manager
-File: utils/, routes/index.js, controllers/UsersController.js
  
 4. Authenticate a user
-mandatory
 In the file routes/index.js, add 3 new endpoints:
 
 GET /connect => AuthController.getConnect
@@ -241,13 +220,8 @@ bob@dylan:~$ curl 0.0.0.0:5000/disconnect -H "X-Token: 031bffac-3edc-4e51-aaae-1
 bob@dylan:~$ curl 0.0.0.0:5000/users/me -H "X-Token: 031bffac-3edc-4e51-aaae-1c121317da8a" ; echo ""
 {"error":"Unauthorized"}
 bob@dylan:~$ 
-Repo:
-
-GitHub repository: alx-files_manager
-File: utils/, routes/index.js, controllers/UsersController.js, controllers/AuthController.js
  
 5. First file
-mandatory
 In the file routes/index.js, add a new endpoint:
 
 POST /files => FilesController.postUpload
@@ -330,13 +304,8 @@ bob@dylan:~$
 bob@dylan:~$ ls /tmp/files_manager/
 2a1f4fc3-687b-491a-a3d2-5808a02942c9   51997b88-5c42-42c2-901e-e7f4e71bdc47
 bob@dylan:~$
-Repo:
-
-GitHub repository: alx-files_manager
-File: utils/, routes/index.js, controllers/FilesController.js
  
 6. Get and list file
-mandatory
 In the file routes/index.js, add 2 new endpoints:
 
 GET /files/:id => FilesController.getShow
@@ -373,13 +342,8 @@ bob@dylan:~$
 bob@dylan:~$ curl -XGET 0.0.0.0:5000/files/5f1e8896c7ba06511e683b25 -H "X-Token: f21fb953-16f9-46ed-8d9c-84c6450ec80f" ; echo ""
 {"id":"5f1e8896c7ba06511e683b25","userId":"5f1e7cda04a394508232559d","name":"image.png","type":"image","isPublic":true,"parentId":"5f1e881cc7ba06511e683b23"}
 bob@dylan:~$
-Repo:
-
-GitHub repository: alx-files_manager
-File: utils/, routes/index.js, controllers/FilesController.js
  
 7. File publish/unpublish
-mandatory
 In the file routes/index.js, add 2 new endpoints:
 
 PUT /files/:id/publish => FilesController.putPublish
@@ -414,13 +378,8 @@ bob@dylan:~$
 bob@dylan:~$ curl -XPUT 0.0.0.0:5000/files/5f1e8896c7ba06511e683b25/unpublish -H "X-Token: f21fb953-16f9-46ed-8d9c-84c6450ec80f" ; echo ""
 {"id":"5f1e8896c7ba06511e683b25","userId":"5f1e7cda04a394508232559d","name":"image.png","type":"image","isPublic":false,"parentId":"5f1e881cc7ba06511e683b23"}
 bob@dylan:~$ 
-Repo:
-
-GitHub repository: alx-files_manager
-File: utils/, routes/index.js, controllers/FilesController.js
  
 8. File data
-mandatory
 In the file routes/index.js, add one new endpoint:
 
 GET /files/:id/data => FilesController.getFile
@@ -454,12 +413,8 @@ bob@dylan:~$ curl -XGET 0.0.0.0:5000/files/5f1e879ec7ba06511e683b22/data ; echo 
 Hello Webstack!
 
 bob@dylan:~$
-Repo:
 
-GitHub repository: alx-files_manager
-File: utils/, routes/index.js, controllers/FilesController.js
 9. Image Thumbnails
-mandatory
 Update the endpoint POST /files endpoint to start a background processing for generating thumbnails for a file of type image:
 
 Create a Bull queue fileQueue
@@ -500,4 +455,3 @@ bob@dylan:~$
 bob@dylan:~$ curl -XGET 0.0.0.0:5000/files/5f1e8896c7ba06511e683b25/data?size=250 -so new_image.png ; file new_image.png
 new_image.png: PNG image data, 250 x 272, 8-bit/color RGBA, non-interlaced
 bob@dylan:~$
-
