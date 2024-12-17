@@ -2,21 +2,25 @@ const { MongoClient } = require('mongodb');
 
 class DBClient {
   constructor() {
-    this.host = process.env.DB_HOST || 'localhost';
-    this.port = process.env.DB_PORT || '27017';
-    this.database = process.env.DB_DATABASE || 'files_manager';
+    const host = process.env.DB_HOST || 'localhost';
+    const port = process.env.DB_PORT || '27017';
+    const database = process.env.DB_DATABASE || 'files_manager';
 
-    const uri = `mongodb://${this.host}:${this.port}/${this.database}`;
+    const uri = `mongodb://${host}:${port}/${database}`;
+
+    // Create MongoDB Client
     this.client = new MongoClient(uri, { useUnifiedTopology: true });
-  }
 
-  // Initiate Connection
-  async connect() {
-    try {
-      await this.client.connect();
-    } catch (err) {
-      console.log(err);
-    }
+    // Connect to the database
+    this.client.connect()
+      .then(() => {
+        console.log('MongoDB Connected');
+        this.db = this.client.db(database);
+      })
+      .catch((err) => {
+        console.error('Failed to connect to Database:', err.message);
+        process.exit(1);
+      });
   }
 
   isAlive() {
@@ -24,21 +28,23 @@ class DBClient {
   }
 
   async nbUsers() {
-    if (!this.isAlive) {
-      throw new Error('DB not connected!');
+    try {
+      const usersCollection = this.db.collection('users');
+      return await usersCollection.countDocuments();
+    } catch (err) {
+      console.error(err);
+      throw err;
     }
-    const db = this.client.db(this.database);
-    const usersCollection = db.collection('users');
-    return usersCollection.countDocuments();
   }
 
   async nbFiles() {
-    if (!this.isAlive) {
-      throw new Error('DB not connected!');
+    try {
+      const filesCollection = this.db.collection('files');
+      return await filesCollection.countDocuments();
+    } catch (err) {
+      console.error(err);
+      throw err;
     }
-    const db = this.client.db(this.database);
-    const filesCollection = db.collection('files');
-    return filesCollection.countDocuments();
   }
 }
 
